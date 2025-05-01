@@ -1,7 +1,7 @@
 PasswordAuthentication no
 StrictHostKeyChecking no
 
-Host Bastion
+Host bastionNSO
        HostName 188.95.227.4
        User ubuntu
        IdentityFile ~/.ssh/ansiblekey
