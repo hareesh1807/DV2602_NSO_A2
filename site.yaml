@@ -1,1 +1,73 @@
 
+- name: Setup and Deploy Flask App on Web Servers
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Update and upgrade webserver packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+        autoremove: yes
+        autoclean: yes
+
+    - name: Install required APT packages
+      apt:
+        name:
+          - python3-pip
+          - gunicorn
+        state: present
+
+    - name: Install Flask via pip
+      pip:
+        name: flask
+        state: latest
+
+    - name: Copy Flask application code to webserver
+      copy:
+        src: application2.py
+        dest: /home/ubuntu/application2.py
+        owner: ubuntu
+        mode: '0644'
+
+    - name: Run Flask app using Gunicorn
+      shell: gunicorn -w 2 -D -b 0.0.0.0:5000 application2:app
+      args:
+        chdir: /home/ubuntu
+
+
+- name: Install and Configure HAProxy Load Balancer
+  hosts: HAproxy
+  become: yes
+  tasks:
+    - name: Update and upgrade load balancer packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+        autoremove: yes
+        autoclean: yes
+
+    - name: Install HAProxy
+      apt:
+        name: haproxy
+        state: latest
+
+    - name: Deploy HAProxy configuration file
+      template:
+        src: haproxy.cfg.j2
+        dest: /etc/haproxy/haproxy.cfg
+        
+    - name: Enable and restart HAProxy service
+      service:
+        name: haproxy
+        state: restarted
+        enabled: yes
+
+
+- name: Reload HAProxy to Register New Backend Webservers
+  hosts: HAproxy
+  become: yes
+  tasks:
+    - name: Gracefully reload HAProxy
+      service:
+        name: haproxy
+        state: reloaded
