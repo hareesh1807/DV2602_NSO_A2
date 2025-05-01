@@ -18,18 +18,18 @@ Host DevA
        HostName 10.1.0.26
        User ubuntu
        IdentityFile ~/.ssh/ansiblekey
-       ProxyJump Bastion
+       ProxyJump bastionNSO
 
 
 Host DevB
        Hostname 10.1.0.29
        User ubuntu
        IdentityFile ~/.ssh/ansiblekey
-       ProxyJump Bastion
+       ProxyJump bastionNSO
 
 
 Host DevC
        Hostname 10.1.0.25
        User ubuntu
        IdentityFile ~/.ssh/ansiblekey
-       ProxyJump Bastion
+       ProxyJump bastionNSO
