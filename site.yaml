@@ -65,7 +65,7 @@
         state: restarted
         enabled: yes
 
-# Reload HAproxy After Web App Deployment
+# Reload HAproxy After deployment
 - name: Reload HAproxy to Register New Backend Webservers
   hosts: HAproxy
   become: yes
@@ -74,6 +74,8 @@
       service:
         name: haproxy
         state: reloaded
+
+        
 
 
 
