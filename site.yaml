@@ -28,13 +28,13 @@
         dest: /home/ubuntu/application2.py
         owner: ubuntu
         mode: '0644'
-
+    
     - name: Run Flask app using Gunicorn
-      shell: gunicorn -w 2 -D -b 0.0.0.0:8080 application2:app
+      shell: gunicorn -w 2 -D -b 0.0.0.0:5000 application2:app
       args:
         chdir: /home/ubuntu
 
-#Setup Load Balancer (HAproxy Configuration)
+#Setup Load Balancer (HAproxy)
 - name: Install and Configure HAproxy Load Balancer
   hosts: HAproxy
   become: yes
@@ -58,14 +58,13 @@
         owner: root
         group: root
         mode: '0644'
-
     - name: Enable and restart HAproxy service
       service:
         name: haproxy
         state: restarted
         enabled: yes
-
-# Reload HAproxy After deployment
+        
+# Reload HAproxy After Web App Deployment
 - name: Reload HAproxy to Register New Backend Webservers
   hosts: HAproxy
   become: yes
@@ -74,8 +73,5 @@
       service:
         name: haproxy
         state: reloaded
-
-        
-
 
 
