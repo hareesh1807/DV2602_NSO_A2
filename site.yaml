@@ -34,7 +34,7 @@
       args:
         chdir: /home/ubuntu
 
-#Setup Load Balancer (HAproxy)
+#Setup Load Balancer (HAproxy Configuration)
 - name: Install and Configure HAproxy Load Balancer
   hosts: HAproxy
   become: yes
