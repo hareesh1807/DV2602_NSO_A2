@@ -13,21 +13,21 @@ Host bastionNSO
        IdentityFile ~/.ssh/key1
 
 
-Host DevA
+Host devA
        HostName 10.0.1.25
        User ubuntu
        IdentityFile ~/.ssh/key1
        ProxyJump bastionNSO
 
 
-Host DevB
+Host devB
        Hostname 10.0.1.8
        User ubuntu
        IdentityFile ~/.ssh/key1
        ProxyJump bastionNSO
 
 
-Host DevC
+Host devC
        Hostname 10.0.1.4
        User ubuntu
        IdentityFile ~/.ssh/ansiblekey
