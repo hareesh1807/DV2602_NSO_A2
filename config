@@ -35,5 +35,5 @@ Host devC
        User ubuntu
        IdentityFile ~/.ssh/ansiblekey
        ProxyJump bastionNSO
-       PasswordAuthentication no
+       PasswordAuthentication no   
        StrictHostKeyChecking no
