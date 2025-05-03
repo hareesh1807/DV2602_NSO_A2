@@ -1,35 +1,34 @@
 PasswordAuthentication no
 StrictHostKeyChecking no
 
+Host HAproxy
+       HostName 89.46.83.62
+       User ubuntu
+       IdentityFile ~/.ssh/key1
+
+
 Host bastionNSO
-       HostName 188.95.227.4
+       HostName 91.106.199.29
        User ubuntu
-       IdentityFile ~/.ssh/ansiblekey
-
-
-
-Host HAProxy
-       HostName 188.95.227.44
-       User ubuntu
-       IdentityFile ~/.ssh/ansiblekey
+       IdentityFile ~/.ssh/key1
 
 
 Host DevA
-       HostName 10.1.0.26
+       HostName 10.0.1.25
        User ubuntu
-       IdentityFile ~/.ssh/ansiblekey
+       IdentityFile ~/.ssh/key1
        ProxyJump bastionNSO
 
 
 Host DevB
-       Hostname 10.1.0.29
+       Hostname 10.0.1.8
        User ubuntu
-       IdentityFile ~/.ssh/ansiblekey
+       IdentityFile ~/.ssh/key1
        ProxyJump bastionNSO
 
 
 Host DevC
-       Hostname 10.1.0.25
+       Hostname 10.0.1.4
        User ubuntu
        IdentityFile ~/.ssh/ansiblekey
        ProxyJump bastionNSO
