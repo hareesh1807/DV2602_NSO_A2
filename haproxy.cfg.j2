@@ -43,11 +43,10 @@ frontend web-frontend
 
 backend web-backend
         balance roundrobin
-        mode http
         option forwardfor
 
 
 
    {% for dev_servers in groups['webservers'] %}
-   server  {{ dev_servers }} {{ hostvars[dev_servers]["ansible_default_ipv4"]["address"]}}:5000
+   server  {{ dev_servers }} {{ hostvars[dev_servers]["ansible_default_ipv4"]["address"]}}:80
    {% endfor %}
