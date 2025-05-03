@@ -1,4 +1,4 @@
-
+#Setup Webservers
 - name: Setup and Deploy Flask App on Web Servers
   hosts: webservers
   become: yes
@@ -28,14 +28,14 @@
         dest: /home/ubuntu/application2.py
         owner: ubuntu
         mode: '0644'
-
+    
     - name: Run Flask app using Gunicorn
-      shell: gunicorn -w 2 -D -b 0.0.0.0:5000 application2:app
+      shell: gunicorn -w 2 -D -b 0.0.0.0:8080 application2:app
       args:
         chdir: /home/ubuntu
 
-
-- name: Install and Configure HAProxy Load Balancer
+#Setup Load Balancer (HAproxy)
+- name: Install and Configure HAproxy Load Balancer
   hosts: HAproxy
   become: yes
   tasks:
@@ -46,28 +46,48 @@
         autoremove: yes
         autoclean: yes
 
-    - name: Install HAProxy
+    - name: Install HAproxy
       apt:
         name: haproxy
         state: latest
 
-    - name: Deploy HAProxy configuration file
+    - name: Deploy HAproxy configuration file
       template:
         src: haproxy.cfg.j2
         dest: /etc/haproxy/haproxy.cfg
-        
-    - name: Enable and restart HAProxy service
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Enable and restart HAproxy service
       service:
         name: haproxy
         state: restarted
         enabled: yes
-
-
-- name: Reload HAProxy to Register New Backend Webservers
+        
+# Reload HAproxy After Web App Deployment
+- name: Reload HAproxy to Register New Backend Webservers
   hosts: HAproxy
   become: yes
   tasks:
-    - name: Gracefully reload HAProxy
+    - name: Gracefully reload HAproxy
       service:
         name: haproxy
         state: reloaded
+
+- name: Testing
+  hosts: HAproxy
+  become: yes
+  tasks:
+    - name: Testing the HAproxy load balancing 1st time.
+      shell: "curl localhost"
+      register: "output"
+      args:
+        warn: false
+    - debug: var=output.stdout
+
+    - name: Testing the HAproxy load balancing 2nd time.
+      shell: "curl localhost"
+      register: "output"
+      args:
+        warn: false
+    - debug: var=output.stdout
